@@ -67,6 +67,15 @@ class TOAHModel:
         TBD
         '''
         
+    def get_number_of_stools() -> int:
+        ''' Return the number of stools in toahmodel.
+        '''
+        
+    def get_number_of_cheeses() -> int:
+        ''' Return the number of cheeses in toahmodel.
+        '''
+        
+        
     def add(self, cheese: "Cheese", pos: int) -> None:
         ''' Add a cheese to the TOAHModel given position, pos.
         
