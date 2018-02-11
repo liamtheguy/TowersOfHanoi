@@ -76,6 +76,29 @@ class TOAHModel:
         
         '''
     
+    def fill_first_stool(num_cheeses: int) -> None:
+        ''' Adds num_cheeses to the first stool in hanoi.
+        
+        >>> toah = TOAHModel(2)
+        >>> toah.fill_first_stool(1)
+        >>> toah = TOAHModel(3)
+        >>> toah.fill_first_stool(2)
+        '''
+        
+    def get_first_cheese(self, stool_index: int) -> Cheese:
+        ''' Return the first cheese given the stool_index.
+        
+        >>> toah = TOAHModel(2)
+        >>> 
+        '''
+        
+    def get_cheese_location(self, cheese_to_move: "Cheese") -> int:
+        ''' Return the location of given cheese_to_move in the TOAHModel.
+        
+        >>> toah = TOAHModel(2)
+        >>> 
+        '''    
+    
     def get_move_seq(self):
         """ Return the move sequence
 
