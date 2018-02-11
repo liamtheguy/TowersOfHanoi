@@ -56,6 +56,26 @@ class TOAHModel:
         # you must have _move_seq as well as any other attributes you choose
         # self._move_seq = MoveSequence([])
 
+    def number_of_moves(self) -> int:
+        ''' Return the number of moves done so far.
+        
+        >>> toah = TOAHModel(2) 
+        >>> toah.number_of_moves()
+        TBD
+        >>> toah = TOAHModel(2)
+        >>> toah.number_of_moves()
+        TBD
+        '''
+        
+    def add(self, cheese: "Cheese", pos: int) -> None:
+        ''' Add a cheese to the TOAHModel given position, pos.
+        
+        >>> toah = TOAHModel(2)
+        >>> cheese = Cheese(2)
+        >>> toah.add(cheese, 0)
+        
+        '''
+    
     def get_move_seq(self):
         """ Return the move sequence
 
