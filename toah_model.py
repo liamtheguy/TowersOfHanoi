@@ -75,8 +75,13 @@ class TOAHModel:
         >>> toah.add(cheese, 0)
         
         '''
+        
+    def move(self, from_stool: int, to_stool: int) -> None:
+        ''' Move cheese at index from_stool to index to_stool.
+        '''
+        
     
-    def fill_first_stool(num_cheeses: int) -> None:
+    def fill_first_stool(self, num_cheeses: int) -> None:
         ''' Adds num_cheeses to the first stool in hanoi.
         
         >>> toah = TOAHModel(2)
