@@ -52,28 +52,31 @@ class TOAHModel:
         >>> M.get_number_of_cheeses()
         5
         """
-        pass
+        self.number_of_stools = number_of_stools
+        self.num_moves = 0
+        self._move_seq = MoveSequence([])
+        self._stools = []
+        self.number_of_cheeses = 0
+        for i in range(number_of_stools):
+            self._stools.append([])
+        
         # you must have _move_seq as well as any other attributes you choose
         # self._move_seq = MoveSequence([])
-
-    def number_of_moves(self) -> int:
-        ''' Return the number of moves done so far.
         
-        >>> toah = TOAHModel(2) 
-        >>> toah.number_of_moves()
-        TBD
-        >>> toah = TOAHModel(2)
-        >>> toah.number_of_moves()
-        TBD
-        '''
-        
-    def get_number_of_stools() -> int:
+    def get_number_of_stools(self) -> int:
         ''' Return the number of stools in toahmodel.
         '''
+        return self.number_of_stools
+    
+    def number_of_moves(self) -> int:
+        ''' Return the numbers of moves done.
+        '''
+        return self.num_moves
         
-    def get_number_of_cheeses() -> int:
+    def get_number_of_cheeses(self) -> int:
         ''' Return the number of cheeses in toahmodel.
         '''
+        return self.number_of_cheeses
         
         
     def add(self, cheese: "Cheese", pos: int) -> None:
@@ -84,10 +87,19 @@ class TOAHModel:
         >>> toah.add(cheese, 0)
         
         '''
+        self._stools[pos].append(cheese)
+        self.number_of_cheeses += 1
         
     def move(self, from_stool: int, to_stool: int) -> None:
         ''' Move cheese at index from_stool to index to_stool.
         '''
+        print(self.get_top_cheese(to_stool))
+        print(self.get_top_cheese(from_stool))
+        if self.get_top_cheese(to_stool) != None and self.get_top_cheese(from_stool) != None and self.get_top_cheese(from_stool).size > self.get_top_cheese(to_stool).size:
+            raise IllegalMoveError
+        else:
+            self.add(self.get_top_cheese(from_stool), to_stool)
+            self._stools[from_stool].pop()
         
     
     def fill_first_stool(self, num_cheeses: int) -> None:
@@ -99,19 +111,29 @@ class TOAHModel:
         >>> toah.fill_first_stool(2)
         '''
         
-    def get_first_cheese(self, stool_index: int) -> Cheese:
+        for cur_size in range(num_cheeses):
+            self.add(Cheese(cur_size), 0)
+        
+    def get_top_cheese(self, stool_index: int) -> "Cheese":
         ''' Return the first cheese given the stool_index.
         
         >>> toah = TOAHModel(2)
         >>> 
         '''
+        if not self._stools[stool_index]:
+            return None
+        return self._stools[stool_index][-1]
         
     def get_cheese_location(self, cheese_to_move: "Cheese") -> int:
         ''' Return the location of given cheese_to_move in the TOAHModel.
         
         >>> toah = TOAHModel(2)
         >>> 
-        '''    
+        '''
+        for cur_pos in range(len(self._stools)):
+            if cheese_to_move in self._stools[cur_pos]:
+                return cur_pos
+        return -1
     
     def get_move_seq(self):
         """ Return the move sequence
@@ -151,7 +173,11 @@ class TOAHModel:
         >>> m1 == m2
         True
         """
-        pass
+        for cur_stool in range(self.number_of_stools):
+            if self._stools[cur_stool] == other._stools[cur_stool]:
+                return True
+            else:
+                return False
 
     def _cheese_at(self, stool_index, stool_height):
         # """ Return (stool_height)th from stool_index stool, if possible.
