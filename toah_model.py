@@ -53,7 +53,6 @@ class TOAHModel:
         5
         """
         self.number_of_stools = number_of_stools
-        self.num_moves = 0
         self._move_seq = MoveSequence([])
         self._stools = []
         self.number_of_cheeses = 0
@@ -71,7 +70,7 @@ class TOAHModel:
     def number_of_moves(self) -> int:
         ''' Return the numbers of moves done.
         '''
-        return self.num_moves
+        return self._move_seq.length()
         
     def get_number_of_cheeses(self) -> int:
         ''' Return the number of cheeses in toahmodel.
@@ -93,13 +92,14 @@ class TOAHModel:
     def move(self, from_stool: int, to_stool: int) -> None:
         ''' Move cheese at index from_stool to index to_stool.
         '''
-        print(self.get_top_cheese(to_stool))
-        print(self.get_top_cheese(from_stool))
-        if self.get_top_cheese(to_stool) != None and self.get_top_cheese(from_stool) != None and self.get_top_cheese(from_stool).size > self.get_top_cheese(to_stool).size:
+        #not(self.get_top_cheese(from_stool)) or not(not(self.get_top_cheese(to_stool)) or self.get_top_cheese(from_stool).size < self.get_top_cheese(to_stool).size):
+            
+        if self.get_top_cheese(from_stool) and not(self.get_top_cheese(from_stool) < self.get_top_cheese(to_stool)):
             raise IllegalMoveError
         else:
-            self.add(self.get_top_cheese(from_stool), to_stool)
-            self._stools[from_stool].pop()
+            self._stools[to_stool].append(self.get_top_cheese(from_stool))
+            self._stools[from_stool].pop() #Not sure if the best way to remove from previous spot
+            self._move_seq.add_move(from_stool, to_stool)
         
     
     def fill_first_stool(self, num_cheeses: int) -> None:
@@ -111,7 +111,7 @@ class TOAHModel:
         >>> toah.fill_first_stool(2)
         '''
         
-        for cur_size in range(num_cheeses):
+        for cur_size in range(num_cheeses, 0, -1):
             self.add(Cheese(cur_size), 0)
         
     def get_top_cheese(self, stool_index: int) -> "Cheese":
@@ -119,8 +119,8 @@ class TOAHModel:
         
         >>> toah = TOAHModel(2)
         >>> 
-        '''
-        if not self._stools[stool_index]:
+        '''    
+        if self._stools[stool_index] == []:
             return None
         return self._stools[stool_index][-1]
         
@@ -133,7 +133,6 @@ class TOAHModel:
         for cur_pos in range(len(self._stools)):
             if cheese_to_move in self._stools[cur_pos]:
                 return cur_pos
-        return -1
     
     def get_move_seq(self):
         """ Return the move sequence
@@ -174,10 +173,9 @@ class TOAHModel:
         True
         """
         for cur_stool in range(self.number_of_stools):
-            if self._stools[cur_stool] == other._stools[cur_stool]:
-                return True
-            else:
+            if not self._stools[cur_stool] == other._stools[cur_stool]:
                 return False
+        return True
 
     def _cheese_at(self, stool_index, stool_height):
         # """ Return (stool_height)th from stool_index stool, if possible.
@@ -274,6 +272,14 @@ class Cheese:
         @rtype: bool
         """
         return self.size == other.size
+    
+    def __lt__(self, other):
+        """ Is self greater than other?
+        Compare using size of self and other, with None as false.
+        """
+        if isinstance(other, type(None)):
+            return True
+        return self.size < other.size   
 
 
 class IllegalMoveError(Exception):
