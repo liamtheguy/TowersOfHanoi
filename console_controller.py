@@ -40,7 +40,7 @@ def move(model, origin, dest):
         stool number you want to move cheese to
     @rtype: None
     """
-    pass
+    model.move(origin,dest)
 
 
 class ConsoleController:
@@ -55,7 +55,14 @@ class ConsoleController:
         @param int number_of_stools:
         @rtype: None
         """
-        pass
+        self.model = TOAHModel(number_of_stools)
+
+        self.model.fill_first_stool(number_of_cheeses)
+        
+        #the complete model of the model
+        self.model_complete = TOAHModel(number_of_stools)
+        self.model_complete._stools[number_of_stools-1] = self.model._stools[0][0:]
+
 
     def play_loop(self):
         """ Play Console-based game.
@@ -75,13 +82,87 @@ class ConsoleController:
         ConsoleController.move; it's up to you.
         -After each valid move, use the method TOAHModel.__str__ that we've
         provided to print a representation of the current state of the game.
+
+        % press q to quit
+        % press s to start
+        - starting the game:
+            after 
+        - for moving position of cheese
+            first type the index of the stool, to select the top cheese on it.
+            Then put ',' and after type the index of the stool which you want
+            to put the selected cheese on.
         """
-        pass
+        #printing out the instruction for game
+        print('***___________INSTRUCTION___________***')
+        #initializing the user input
+        user_input = ''
+        #initializing whether the game has finished or not
+        has_solved = False
+
+        while user_input != 'q' and  not has_solved:
+
+            print(self.model)
+            user_input = input('Please enter the moving order: ')
+
+            if user_input != 'q':
+
+                
+                try:
+
+                    positions = user_input.split(',')
+                    
+                    start_pos = int(positions[0])
+
+                    dest_pos = int(positions[1])
+
+                    move(self.model, start_pos, dest_pos)
+
+                except:
+
+                    print('Illegal Move, please enter the move again')
+
+
+                finally:
+
+                    if self.model == self.model_complete:
+
+                        print('Congrats!! you have solved the game')
+                        has_solved = True
+                        
+                    else:
+
+                        print('please enter your next move: ')
+
+                
+        print('The Game is Over.\nThanks for playing the game.')
 
 
 if __name__ == '__main__':
     # TODO:
     # You should initiate game play here. Your game should be playable by
     # running this file.
-    pass
+    
+
+    #taking user input for the number of stools and number of cheeses
+    num_cheeses = 0
+    num_stools = 0
+
+    while num_cheeses < 1 or num_stools < 2:
+
+        try:
+            
+            num_stools = int(input('Please enter the the number of stools: '))
+            num_cheeses = int(input('please enter number of cheeses: '))
+
+        except:
+
+            print('Illegal entry please try again.')
+            num_cheeses = 0
+            num_stools = 0
+
+    
+    console = ConsoleController(num_cheeses, num_stools)
+    console.play_loop()
+
+    
     
