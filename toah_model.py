@@ -89,16 +89,21 @@ class TOAHModel:
         self._stools[pos].append(cheese)
         self.number_of_cheeses += 1
         
+    def remove_top_cheese(self, pos: int) -> None:
+        ''' Removes a cheese to the TOAHModel given position, pos.
+        '''
+        self._stools[pos].pop()
+        self.number_of_cheeses -= 1
+        
     def move(self, from_stool: int, to_stool: int) -> None:
         ''' Move cheese at index from_stool to index to_stool.
         '''
-        #not(self.get_top_cheese(from_stool)) or not(not(self.get_top_cheese(to_stool)) or self.get_top_cheese(from_stool).size < self.get_top_cheese(to_stool).size):
             
         if self.get_top_cheese(from_stool) and not(self.get_top_cheese(from_stool) < self.get_top_cheese(to_stool)):
             raise IllegalMoveError
         else:
-            self._stools[to_stool].append(self.get_top_cheese(from_stool))
-            self._stools[from_stool].pop() #Not sure if the best way to remove from previous spot
+            self.add(self.get_top_cheese(from_stool), to_stool)
+            self.remove_top_cheese(from_stool)
             self._move_seq.add_move(from_stool, to_stool)
         
     

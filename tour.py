@@ -31,7 +31,7 @@ import time
 from toah_model import TOAHModel
 
 
-def tour_of_four_stools(model, delay_btw_moves=0.5, animate=False):
+def tour_of_four_stools(model, delay_btw_moves=0.5, animate=True):
     """Move a tower of cheeses from the first stool in model to the fourth.
 
     @type model: TOAHModel
@@ -42,16 +42,29 @@ def tour_of_four_stools(model, delay_btw_moves=0.5, animate=False):
     @type animate: bool
         animate the tour or not
     @rtype: None
-    """
-    hanoi(0, 3, 1, 2, len(model._stools[0]), model)
-
-def hanoi(source,target,other1, other2, n, model):
+    """   
+    animate = True
+    delay_btw_moves = 0.1
+    if animate:
+        print(model)
+        time.sleep(delay_btw_moves)
+    hanoi(0, 1, 2, len(model._stools[0])//2, model, animate, delay_btw_moves)
+    hanoi(0, 3, 2, len(model._stools[0]), model, animate, delay_btw_moves)
+    hanoi(1, 3, 2, len(model._stools[1]), model, animate, delay_btw_moves)     
+        
+def hanoi(source,target,other,n, model, animate, delay_between_moves):
     if n == 1:
         model.move(source, target)
+        if animate:
+            print(model)
+            time.sleep(delay_between_moves)
     else:
-        hanoi(source,other1, other2, target,n-1, model)
+        hanoi(source,other,target,n-1, model, animate, delay_between_moves)
         model.move(source, target)
-        hanoi(other1,target, other2, source,n-1, model)
+        if animate:
+            print(model)
+            time.sleep(delay_between_moves)
+        hanoi(other,target,source,n-1, model, animate, delay_between_moves)
 
 
 if __name__ == '__main__':
