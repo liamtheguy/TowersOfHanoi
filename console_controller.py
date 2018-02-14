@@ -84,7 +84,7 @@ class ConsoleController:
         provided to print a representation of the current state of the game.
 
         % press q to quit
-        % press s to start
+
         - starting the game:
             after 
         - for moving position of cheese
@@ -128,10 +128,6 @@ class ConsoleController:
 
                         print('Congrats!! you have solved the game')
                         has_solved = True
-                        
-                    else:
-
-                        print('please enter your next move: ')
 
                 
         print('The Game is Over.\nThanks for playing the game.')
