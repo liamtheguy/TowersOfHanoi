@@ -43,17 +43,25 @@ def tour_of_four_stools(model, delay_btw_moves=0.5, animate=False):
         animate the tour or not
     @rtype: None
     """
-    pass
+    hanoi(0, 3, 1, 2, len(model._stools[0]), model)
+
+def hanoi(source,target,other1, other2, n, model):
+    if n == 1:
+        model.move(source, target)
+    else:
+        hanoi(source,other1, other2, target,n-1, model)
+        model.move(source, target)
+        hanoi(other1,target, other2, source,n-1, model)
 
 
 if __name__ == '__main__':
-    num_cheeses = 5
+    num_cheeses = 6
     delay_between_moves = 0.5
     console_animate = False
 
     # DO NOT MODIFY THE CODE BELOW.
     four_stools = TOAHModel(4)
-    four_stools.fill_first_stool(number_of_cheeses=num_cheeses)
+    four_stools.fill_first_stool(num_cheeses)
 
     tour_of_four_stools(four_stools,
                         animate=console_animate,
