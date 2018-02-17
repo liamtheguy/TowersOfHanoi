@@ -45,27 +45,77 @@ def tour_of_four_stools(model, delay_btw_moves=0.5, animate=True):
     """   
     animate = True
     delay_btw_moves = 0.1
-    if animate:
-        print(model)
-        time.sleep(delay_btw_moves)
-    hanoi(0, 1, 2, len(model._stools[0])//2, model, animate, delay_btw_moves)
-    hanoi(0, 3, 2, len(model._stools[0]), model, animate, delay_btw_moves)
-    hanoi(1, 3, 2, len(model._stools[1]), model, animate, delay_btw_moves)     
-        
-def hanoi(source,target,other,n, model, animate, delay_between_moves):
+    
+    print(model)
+    
+    hanoi_4_stools(0,3,1,2,len(model._stools[0]),model)
+   
+def hanoi_3_stools(source,target,other,n, model):
     if n == 1:
         model.move(source, target)
-        if animate:
-            print(model)
-            time.sleep(delay_between_moves)
+        print(model)
     else:
-        hanoi(source,other,target,n-1, model, animate, delay_between_moves)
+        hanoi_3_stools(source,other,target,n-1, model)
         model.move(source, target)
-        if animate:
-            print(model)
-            time.sleep(delay_between_moves)
-        hanoi(other,target,source,n-1, model, animate, delay_between_moves)
+        print(model)
+        hanoi_3_stools(other,target,source,n-1, model)
 
+
+def hanoi_4_stools(source, target, other1 , other2, n, model) -> None:
+    """
+    A method to move n cheeses from the starting stool to the final stools 
+    with the help of 2 intermediate stools (or total of 4 stools) 
+    (this method calls the 3 stool method)
+    """
+    
+    if n > 3:
+        
+        i = optimal_cut(n)
+        hanoi_4_stools(source, other2, other1, target, n-i, model)
+        hanoi_3_stools(source,target,other1,i,model)
+        hanoi_4_stools(other2, target, source, other1, n-i, model)
+    
+    elif n == 3:
+
+              
+        model.move(source, other1)
+        model.move(source, other2)
+        model.move(source, target)
+        model.move(other2, target)
+        model.move(other1, target)
+        
+    elif n == 2:
+        
+        model.move(source, other2)
+        model.move(source, target)
+        model.move(other2, target)
+        
+    else:
+        model.move(source, target)
+       
+
+def optimal_cut(num_cheese):
+    
+    initial = 3
+    end = 5
+    optimal = 2
+    i = 3
+    while True:
+    
+        if initial <= num_cheese and num_cheese <= end:
+
+            return optimal
+
+        else:
+            
+            optimal += 1
+            initial += i
+            end += i+1
+            i += 1 
+
+    
+    
+    
 
 if __name__ == '__main__':
     num_cheeses = 6
