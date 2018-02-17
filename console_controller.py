@@ -87,13 +87,14 @@ class ConsoleController:
 
         - starting the game:
             after 
-        - for moving position of cheese
-            first type the index of the stool, to select the top cheese on it.
-            Then put ',' and after type the index of the stool which you want
-            to put the selected cheese on.
+        -
         """
         #printing out the instruction for game
-        print('***___________INSTRUCTION___________***')
+        print('***___________INSTRUCTION___________***\n\
+welcome to the game, for moving position of cheese \n \
+first type the index of the stool, to select the top cheese on it.\n\
+Then put "," and after type the index of the stool which you want\n\
+to put the selected cheese on. also for exiting just input "q".')
         #initializing the user input
         user_input = ''
         #initializing whether the game has finished or not
