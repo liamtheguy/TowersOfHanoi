@@ -45,7 +45,7 @@ def tour_of_four_stools(model, delay_btw_moves=0.5, animate=True):
     """   
     animate = True
     delay_btw_moves = 0.1
-    
+    temp_dict = {}
     print(model)
     
     hanoi_4_stools(0,3,1,2,len(model._stools[0]),model)
@@ -67,10 +67,10 @@ def hanoi_4_stools(source, target, other1 , other2, n, model) -> None:
     with the help of 2 intermediate stools (or total of 4 stools) 
     (this method calls the 3 stool method)
     """
-    
+    temp_dict = {}
     if n > 3:
         
-        i = optimal_cut(n)
+        i = optimal_cut(n, temp_dict)[1]
         hanoi_4_stools(source, other2, other1, target, n-i, model)
         hanoi_3_stools(source,target,other1,i,model)
         hanoi_4_stools(other2, target, source, other1, n-i, model)
@@ -92,27 +92,18 @@ def hanoi_4_stools(source, target, other1 , other2, n, model) -> None:
         
     else:
         model.move(source, target)
-       
-
-def optimal_cut(num_cheese):
     
-    initial = 3
-    end = 5
-    optimal = 2
-    i = 3
-    while True:
-    
-        if initial <= num_cheese and num_cheese <= end:
 
-            return optimal
-
-        else:
-            
-            optimal += 1
-            initial += i
-            end += i+1
-            i += 1 
-
+def optimal_cut(num_cheese, temp_dict):
+    if num_cheese == 1:
+        temp_dict[num_cheese] = 1, 1
+    else:
+        for i in range(1, num_cheese):
+            min_moves = 2 * optimal_cut(num_cheese - i, temp_dict)[0] + (2 ** i) - 1
+            if min_moves < temp_dict.get(num_cheese, (2 ** num_cheese + 1,0))[0]: #Better moves found
+                temp_dict[num_cheese] = (min_moves, i)
+    return temp_dict[num_cheese]
+        
     
     
     
