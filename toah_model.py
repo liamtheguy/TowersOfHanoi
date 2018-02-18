@@ -99,7 +99,7 @@ class TOAHModel:
         ''' Move cheese at index from_stool to index to_stool.
         '''
             
-        if self.get_top_cheese(from_stool) and not(self.get_top_cheese(from_stool) < self.get_top_cheese(to_stool)):
+        if not(self.get_top_cheese(from_stool) and (self.get_top_cheese(from_stool) < self.get_top_cheese(to_stool))):
             raise IllegalMoveError
         else:
             self.add(self.get_top_cheese(from_stool), to_stool)
