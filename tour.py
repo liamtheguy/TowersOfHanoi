@@ -158,7 +158,7 @@ def optimal_cut(num_cheese, temp_dict):
     
 
 if __name__ == '__main__':
-    num_cheeses = 10
+    num_cheeses = 6
     delay_between_moves = 0.5
     console_animate = True
 
