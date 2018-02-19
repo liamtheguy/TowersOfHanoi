@@ -127,7 +127,7 @@ class ConsoleController:
                 finally:
 
                     if self.model == self.model_complete:
-
+                        print(self.model)
                         print('Congrats!! you have solved the game')
                         has_solved = True
 
