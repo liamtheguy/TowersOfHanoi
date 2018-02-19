@@ -91,10 +91,11 @@ class ConsoleController:
         """
         #printing out the instruction for game
         print('***___________INSTRUCTION___________***\n\
-welcome to the game, for moving position of cheese \n \
-first type the index of the stool, to select the top cheese on it.\n\
-Then put "," and after type the index of the stool which you want\n\
-to put the selected cheese on. also for exiting just input "q".')
+   1. type "q" to exit the game at any stage \n  2.\
+    the format of which you want to enter your move is as follows\
+   \n >>>   starting stool, target stool \n \
+   this will move the upper most cheese on the starting stool to\
+   top of the target stool')
         #initializing the user input
         user_input = ''
         #initializing whether the game has finished or not

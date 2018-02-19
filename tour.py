@@ -43,58 +43,107 @@ def tour_of_four_stools(model, delay_btw_moves=0.5, animate=True):
         animate the tour or not
     @rtype: None
     """   
-    animate = True
-    delay_btw_moves = 0.1
-    temp_dict = {}
+    if not animate:
+        
+        delay = 0
+    else:
+        
+        delay = delay_btw_moves
+        
     print(model)
-    
-    hanoi_4_stools(0,3,1,2,len(model._stools[0]),model)
+    time.sleep(delay)
+    hanoi_4_stools(0,3,1,2,len(model._stools[0]),model, delay)
    
-def hanoi_3_stools(source,target,other,n, model):
+def hanoi_3_stools(source,target,other,n, model, delay):
+    
     if n == 1:
         model.move(source, target)
         print(model)
+        time.sleep(delay)
     else:
-        hanoi_3_stools(source,other,target,n-1, model)
+        hanoi_3_stools(source,other,target,n-1, model, delay)
         model.move(source, target)
         print(model)
-        hanoi_3_stools(other,target,source,n-1, model)
+        time.sleep(delay)
+        hanoi_3_stools(other,target,source,n-1, model, delay)
 
 
-def hanoi_4_stools(source, target, other1 , other2, n, model) -> None:
+def hanoi_4_stools(source, target, other1 , other2, n, model, delay) -> None:
     """
     A method to move n cheeses from the starting stool to the final stools 
     with the help of 2 intermediate stools (or total of 4 stools) 
     (this method calls the 3 stool method)
     """
     temp_dict = {}
-    if n > 3:
-        
-        i = optimal_cut(n, temp_dict)[1]
-        hanoi_4_stools(source, other2, other1, target, n-i, model)
-        hanoi_3_stools(source,target,other1,i,model)
-        hanoi_4_stools(other2, target, source, other1, n-i, model)
+
+    #The base_case for 1,2 and 3 number of cheeses
     
-    elif n == 3:
+    if n <= 3 :
+
+        besecase_solver(source, target, other1 , other2, n, model, delay)
+
+        
+    else: 
+#determining the best number of cheeses to cut to optimal the process
+        i = optimal_cut(n, temp_dict)[1]
+        hanoi_4_stools(source, other2, other1, target, n-i, model, delay)
+        hanoi_3_stools(source,target,other1,i,model, delay)
+        hanoi_4_stools(other2, target, source, other1, n-i, model, delay)
+
+
+def besecase_solver(source, target, other1 , other2, n, model, delay):
+
+    # manual solution for 3 cheeses.
+    if n == 3:
 
               
         model.move(source, other1)
+        print(model)
+        time.sleep(delay)
         model.move(source, other2)
+        print(model)
+        time.sleep(delay)
         model.move(source, target)
+        print(model)
+        time.sleep(delay)
         model.move(other2, target)
+        print(model)
+        time.sleep(delay)
         model.move(other1, target)
+        print(model)
+        time.sleep(delay)
         
+    # manual solution for 2 cheeses.       
     elif n == 2:
         
         model.move(source, other2)
+        print(model)
+        time.sleep(delay)
         model.move(source, target)
+        print(model)
+        time.sleep(delay)
         model.move(other2, target)
+        print(model)
+        time.sleep(delay)
+        
+   # manual solution for 1 cheese.      
+    elif n == 1:
+        
+        model.move(source, target)
+        print(model)
         
     else:
-        model.move(source, target)
-    
+        
+        print('illegal number of cheeses')
 
+    
 def optimal_cut(num_cheese, temp_dict):
+    '''
+    finds the optimal number of cheeses
+    to cut from the the pile of cheeses we have,
+    so we can have the optimal number of moves.
+    '''
+    
     if num_cheese == 1:
         temp_dict[num_cheese] = 1, 1
     else:
@@ -109,9 +158,9 @@ def optimal_cut(num_cheese, temp_dict):
     
 
 if __name__ == '__main__':
-    num_cheeses = 6
+    num_cheeses = 10
     delay_between_moves = 0.5
-    console_animate = False
+    console_animate = True
 
     # DO NOT MODIFY THE CODE BELOW.
     four_stools = TOAHModel(4)
